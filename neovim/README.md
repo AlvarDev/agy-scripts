@@ -7,6 +7,13 @@ This directory contains a self-contained installation and configuration bundle f
 *   **`setup_nvim.sh`**: The installer and cleanup script.
 *   **`nvim/init.lua`**: Your custom native Neovim configuration file.
 
+## 📋 Prerequisites
+Before running the installation script, make sure your system has `git` and `curl` installed. 
+*   **On Debian/Ubuntu VMs:**
+    ```bash
+    sudo apt update && sudo apt install -y git curl
+    ```
+
 ## 🚀 Installation
 
 ### Option A: Installing on a Remote VM (One-liner)
