@@ -48,7 +48,7 @@ vim.g.netrw_altv = 1              -- Split vertically
 -- Toggle file explorer with Space + e
 vim.keymap.set('n', '<leader>e', ':Lexplore<CR>', { silent = true, desc = 'Toggle File Tree' })
 
--- If Neovim is opened with a directory (e.g. "nvim ."), open the tree on the left and a blank file on the right
+-- If Neovim is opened with a directory (e.g. "nvim ."), open tree on left, editor top-right, terminal bottom-right
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     -- Check if the first argument passed to nvim is a directory
@@ -57,6 +57,12 @@ vim.api.nvim_create_autocmd('VimEnter', {
       vim.cmd('bwipeout')
       -- Open Netrw on the left side
       vim.cmd('Lexplore')
+      -- Move to the editor window on the right
+      vim.cmd('wincmd l')
+      -- Split the right window vertically and open a terminal on the far right
+      vim.cmd('vsplit | terminal')
+      -- Move cursor focus back to the Netrw tree on the far left (Window 1)
+      vim.cmd('1wincmd w')
     end
   end,
 })
