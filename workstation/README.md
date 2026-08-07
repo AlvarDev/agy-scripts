@@ -50,7 +50,7 @@ Follow these instructions to spin up your machine and configure standard system 
 By default, standard Debian VMs on Google Cloud terminate user processes when the SSH session ends. Run these commands inside the VM terminal to allow background services:
 ```bash
 # A. Install the required system user-session helper
-sudo apt-get update && sudo apt-get install -y dbus-user-session
+sudo apt update && sudo apt install -y dbus-user-session
 
 # B. Allow your user to run background services after logging out (lingering)
 sudo loginctl enable-linger $USER
