@@ -61,6 +61,10 @@ sudo reboot
 *Wait 15–20 seconds, then reconnect via Cloud Shell SSH.*
 
 ### Step 2.3: (Optional) Run tmux for Session Persistence
+Before using it, make sure `tmux` is installed on your system:
+*   **On Debian/Ubuntu VMs:** `sudo apt install -y tmux`
+*   **On macOS:** `brew install tmux`
+
 Since Safari on iPad OS puts background tabs to sleep and drops SSH connections, always run your terminal tasks (like Neovim) inside **`tmux`** to protect your work from being killed:
 1.  **Start tmux:** When you SSH into your VM, type:
     ```bash
