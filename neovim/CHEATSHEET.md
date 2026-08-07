@@ -57,3 +57,13 @@ A handy guide of the most important and useful native commands for Neovim.
 *   **`:tabnew`** - Open a completely new file tab.
 *   **`gt`** - Switch to the **next** tab.
 *   **`gT`** - Switch to the **previous** tab.
+
+---
+
+## 📂 Code Folding
+
+*   **`za`** - **Toggle** (open/close) the fold under your cursor.
+*   **`zc`** - **C**lose the fold under your cursor.
+*   **`zo`** - **O**pen the fold under your cursor.
+*   **`zM`** - Close **M**ore (collapse **all** folds in the entire file).
+*   **`zR`** - Open **R**educe (expand **all** folds in the entire file).

@@ -14,6 +14,8 @@ vim.opt.smartcase = true          -- Case-sensitive search if capital letter use
 vim.opt.hlsearch = true           -- Highlight search results
 vim.opt.termguicolors = true      -- Enable 24-bit RGB colors
 vim.opt.path:append('**')         -- Search all subdirectories recursively when using :find
+vim.opt.foldmethod = 'indent'     -- Fold based on code indentation levels
+vim.opt.foldlevel = 99            -- Start with all folds expanded (open)
 
 -- Map leader key to Space
 vim.g.mapleader = ' '
