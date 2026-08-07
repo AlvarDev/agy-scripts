@@ -16,6 +16,8 @@ vim.opt.termguicolors = true      -- Enable 24-bit RGB colors
 vim.opt.path:append('**')         -- Search all subdirectories recursively when using :find
 vim.opt.foldmethod = 'indent'     -- Fold based on code indentation levels
 vim.opt.foldlevel = 99            -- Start with all folds expanded (open)
+vim.opt.splitright = true         -- Vertically split to the right
+vim.opt.splitbelow = true         -- Horizontally split below
 
 -- Map leader key to Space
 vim.g.mapleader = ' '
