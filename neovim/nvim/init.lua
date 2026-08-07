@@ -42,13 +42,44 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window' })
 vim.g.netrw_banner = 0            -- Hide the help banner at the top
 vim.g.netrw_liststyle = 3         -- Use tree-style view
 vim.g.netrw_winsize = 25          -- Width is 25% of the window
-vim.g.netrw_browse_split = 4      -- Open files in the previous window (keep tree open)
+vim.g.netrw_browse_split = 0      -- Open files in the same window (or target window if netrw_chgwin is set)
 vim.g.netrw_altv = 1              -- Split vertically
 
--- Toggle file explorer with Space + e
-vim.keymap.set('n', '<leader>e', ':Lexplore<CR>', { silent = true, desc = 'Toggle File Tree' })
+-- Helper function to maintain standard window proportions
+local function adjust_layout()
+  local total_cols = vim.o.columns
+  local tree_width = math.max(math.floor(total_cols * 0.15), 18) -- 15% of width, min 18 columns (narrower tree)
+  local term_width = math.max(math.floor(total_cols * 0.30), 30) -- 30% of width, min 30 columns (stable terminal size)
+  
+  local netrw_win = nil
+  local term_win = nil
+  
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.bo[buf].filetype
+    local bt = vim.bo[buf].buftype
+    if ft == 'netrw' then
+      netrw_win = win
+    elseif bt == 'terminal' then
+      term_win = win
+    end
+  end
+  
+  if netrw_win then
+    vim.api.nvim_win_set_width(netrw_win, tree_width)
+  end
+  if term_win then
+    vim.api.nvim_win_set_width(term_win, term_width)
+  end
+end
 
--- If Neovim is opened with a directory (e.g. "nvim ."), open tree on left, editor top-right, terminal bottom-right
+-- Toggle file explorer with Space + e and enforce proper layout widths
+vim.keymap.set('n', '<leader>e', function()
+  vim.cmd('Lexplore')
+  adjust_layout()
+end, { silent = true, desc = 'Toggle File Tree' })
+
+-- If Neovim is opened with a directory (e.g. "nvim ."), open tree on left, editor middle, terminal far-right
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     -- Check if the first argument passed to nvim is a directory
@@ -61,10 +92,19 @@ vim.api.nvim_create_autocmd('VimEnter', {
       vim.cmd('wincmd l')
       -- Split the right window vertically and open a terminal on the far right
       vim.cmd('vsplit | terminal')
+      -- Force Netrw to always open selected files in Window 2 (the middle editor panel)
+      vim.g.netrw_chgwin = 2
+      -- Apply our layout widths
+      adjust_layout()
       -- Move cursor focus back to the Netrw tree on the far left (Window 1)
       vim.cmd('1wincmd w')
     end
   end,
+})
+
+-- Automatically adjust sizes if the terminal emulator window is resized
+vim.api.nvim_create_autocmd('VimResized', {
+  callback = adjust_layout,
 })
 
 -- Auto-command to set up keys ONLY inside the Netrw file explorer buffer
@@ -75,6 +115,8 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.keymap.set('n', 'P', '<CR><C-w>h', { buffer = true, remap = true, silent = true, desc = 'Preview file in editor' })
     -- Override Netrw's default <C-l> mapping (refresh directory) to navigate to the right window
     vim.keymap.set('n', '<C-l>', '<C-w>l', { buffer = true, remap = true, silent = true, desc = 'Go to Right Window' })
+    -- Force <CR> to open files in Window 2 (the middle editor panel)
+    vim.keymap.set('n', '<CR>', ':let g:netrw_chgwin=2<CR><Plug>NetrwLocalBrowseCheck', { buffer = true, remap = true, silent = true, desc = 'Open file in editor panel' })
   end,
 })
 
@@ -111,3 +153,21 @@ end, { expr = true })
 -- ==========================================================================
 -- Open git diff in a terminal within a new tab (press Space + g + d)
 vim.keymap.set('n', '<leader>gd', ':tabedit | term git diff<CR>', { silent = true, desc = 'Git Diff in Terminal Tab' })
+
+-- ==========================================================================
+--  5. INTEGRATED TERMINAL HELPERS
+-- ==========================================================================
+-- Easy way to exit terminal insert mode with Esc
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
+
+-- Easy window navigation directly from terminal insert mode
+vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]], { desc = 'Go to Left Window' })
+vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]], { desc = 'Go to Right Window' })
+
+-- Automatically enter terminal insert mode when focusing a terminal buffer
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'WinEnter' }, {
+  pattern = 'term://*',
+  callback = function()
+    vim.cmd('startinsert')
+  end,
+})
