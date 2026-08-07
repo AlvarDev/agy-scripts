@@ -92,6 +92,10 @@ vim.api.nvim_create_autocmd('VimEnter', {
       vim.cmd('wincmd l')
       -- Split the right window vertically and open a terminal on the far right
       vim.cmd('vsplit | terminal')
+      -- Disable line numbers, relative numbers, and sign column in terminal window
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = 'no'
       -- Force Netrw to always open selected files in Window 2 (the middle editor panel)
       vim.g.netrw_chgwin = 2
       -- Apply our layout widths
@@ -169,5 +173,15 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter', 'WinEnter' }, {
   pattern = 'term://*',
   callback = function()
     vim.cmd('startinsert')
+  end,
+})
+
+-- Configure terminal appearance (disable line numbers, relative numbers, and sign column)
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  callback = function()
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.wo.signcolumn = 'no'
   end,
 })
