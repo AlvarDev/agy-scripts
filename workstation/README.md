@@ -76,6 +76,10 @@ Since Safari on iPad OS puts background tabs to sleep and drops SSH connections,
     ```bash
     tmux attach
     ```
+4.  **Split Vertically (Left / Right):** Press **`Ctrl + b`**, release them, and then press **`%`** (Shift + 5).
+5.  **Split Horizontally (Top / Bottom):** Press **`Ctrl + b`**, release them, and then press **`"`** (Shift + ').
+6.  **Switch between splits:** Press **`Ctrl + b`**, release them, and then press any **Arrow Key** to jump in that direction.
+7.  **Close a split:** Type **`exit`** (or press `Ctrl + d`) inside the panel you want to close.
 
 ---
 
