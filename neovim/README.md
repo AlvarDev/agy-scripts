@@ -46,6 +46,8 @@ To completely remove Neovim and all of its configurations, cache, and plugins fr
 *   **Autocomplete:** Autocomplete dropdowns pop up automatically as you type. Use `Tab` to go down and `Shift + Tab` to go up.
 *   **Git Diff:** Press `Space + g + d` to open your active git diff in a terminal split tab.
 
+For a complete reference list of standard, native Neovim keyboard shortcuts and commands, check out the [Cheat Sheet](CHEATSHEET.md).
+
 ---
 
 ## ⚠️ Troubleshooting: Command not found / PATH Warning
