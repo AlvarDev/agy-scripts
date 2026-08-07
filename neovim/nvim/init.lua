@@ -65,6 +65,8 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     -- Map 'P' to open the file and immediately jump back to the tree window
     vim.keymap.set('n', 'P', '<CR><C-w>h', { buffer = true, remap = true, silent = true, desc = 'Preview file in editor' })
+    -- Override Netrw's default <C-l> mapping (refresh directory) to navigate to the right window
+    vim.keymap.set('n', '<C-l>', '<C-w>l', { buffer = true, remap = true, silent = true, desc = 'Go to Right Window' })
   end,
 })
 
