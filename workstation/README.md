@@ -60,6 +60,19 @@ sudo reboot
 ```
 *Wait 15–20 seconds, then reconnect via Cloud Shell SSH.*
 
+### Step 2.3: (Optional) Run tmux for Session Persistence
+Since Safari on iPad OS puts background tabs to sleep and drops SSH connections, always run your terminal tasks (like Neovim) inside **`tmux`** to protect your work from being killed:
+1.  **Start tmux:** When you SSH into your VM, type:
+    ```bash
+    tmux
+    ```
+    *(This opens a managed session where you can safely run Neovim).*
+2.  **Leave running (Detach):** Press **`Ctrl + b`**, release them, and then press **`d`**. Your editor remains running in the background.
+3.  **Restore session (Attach):** When you reconnect to your VM via SSH, run:
+    ```bash
+    tmux attach
+    ```
+
 ---
 
 ## 3. Client Connection (Safari & iPadOS Settings)
