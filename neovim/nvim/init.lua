@@ -18,6 +18,14 @@ vim.opt.foldmethod = 'indent'     -- Fold based on code indentation levels
 vim.opt.foldlevel = 99            -- Start with all folds expanded (open)
 vim.opt.splitright = true         -- Vertically split to the right
 vim.opt.splitbelow = true         -- Horizontally split below
+vim.opt.autoread = true           -- Automatically reload files changed outside Neovim
+
+-- Automatically trigger checktime to reload files when they change on disk
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = { "*" },
+})
+
 
 -- Map leader key to Space
 vim.g.mapleader = ' '

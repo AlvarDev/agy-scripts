@@ -45,6 +45,7 @@ To completely remove Neovim and all of its configurations, cache, and plugins fr
 *   **Fuzzy Searching:** Press `:find *filename*` followed by `Tab` to search for files recursively in all subdirectories.
 *   **Autocomplete:** Autocomplete dropdowns pop up automatically as you type. Use `Tab` to go down and `Shift + Tab` to go up.
 *   **Git Diff:** Press `Space + g + d` to open your active git diff in a terminal split tab.
+*   **Auto-Reload:** Files modified externally (e.g. by Git or AI assistants) reload automatically when you focus or move the cursor.
 
 For a complete reference list of standard, native Neovim keyboard shortcuts and commands, check out the [Cheat Sheet](CHEATSHEET.md).
 
