@@ -57,7 +57,7 @@ vim.g.netrw_altv = 1              -- Split vertically
 local function adjust_layout()
   local total_cols = vim.o.columns
   local tree_width = math.max(math.floor(total_cols * 0.15), 18) -- 15% of width, min 18 columns (narrower tree)
-  local term_width = math.max(math.floor(total_cols * 0.40), 40) -- 40% of width, min 40 columns (expanded terminal size)
+  local term_width = math.max(math.floor(total_cols * 0.50), 40) -- 50% of width, min 40 columns
   
   local netrw_win = nil
   local term_win = nil
