@@ -13,6 +13,7 @@ vim.opt.ignorecase = true         -- Case-insensitive search
 vim.opt.smartcase = true          -- Case-sensitive search if capital letter used
 vim.opt.hlsearch = true           -- Highlight search results
 vim.opt.termguicolors = true      -- Enable 24-bit RGB colors
+vim.opt.guifont = "Monaco:h12"    -- Native font fallback for GUI clients
 vim.opt.path:append('**')         -- Search all subdirectories recursively when using :find
 vim.opt.foldmethod = 'indent'     -- Fold based on code indentation levels
 vim.opt.foldlevel = 99            -- Start with all folds expanded (open)
@@ -34,11 +35,41 @@ vim.g.maplocalleader = ' '
 -- Clear search highlights with Esc in normal mode
 vim.keymap.set('n', '<Esc>', ':nohlsearch<CR>', { silent = true })
 
--- Set color scheme (Catppuccin Mocha - a high-quality dark mode)
-vim.cmd('colorscheme catppuccin-mocha')
+-- ==========================================================================
+--  NATIVE MATERIAL OCEAN THEME (AlvarDev iTerm2 Parity)
+-- ==========================================================================
+vim.opt.background = 'dark'
+vim.cmd('highlight clear')
+if vim.fn.exists('syntax_on') == 1 then
+  vim.cmd('syntax reset')
+end
+vim.g.colors_name = 'material-ocean'
 
--- Override Identifier (keys in YAML/Terraform) to Catppuccin's soft red
-vim.api.nvim_set_hl(0, 'Identifier', { fg = '#f38ba8' })
+-- Core Editor Canvas & Chrome
+vim.api.nvim_set_hl(0, 'Normal',       { fg = '#8f93a2', bg = '#141414' })
+vim.api.nvim_set_hl(0, 'NormalNC',     { fg = '#8f93a2', bg = '#141414' })
+vim.api.nvim_set_hl(0, 'CursorLine',   { bg = '#1a1a1a' })
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#ffcb6b', bold = true })
+vim.api.nvim_set_hl(0, 'LineNr',       { fg = '#546e7a' })
+vim.api.nvim_set_hl(0, 'Visual',       { bg = '#1f2233' })
+vim.api.nvim_set_hl(0, 'SignColumn',   { bg = '#141414' })
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#262626' })
+vim.api.nvim_set_hl(0, 'StatusLine',   { fg = '#8f93a2', bg = '#1a1a1a' })
+vim.api.nvim_set_hl(0, 'StatusLineNC', { fg = '#546e7a', bg = '#141414' })
+vim.api.nvim_set_hl(0, 'Pmenu',        { fg = '#8f93a2', bg = '#1a1a1a' })
+vim.api.nvim_set_hl(0, 'PmenuSel',     { fg = '#82aaff', bg = '#1f2233', bold = true })
+
+-- Material Ocean Syntax Mapping (Scheme A: Purple Keywords & Distinct Functions)
+vim.api.nvim_set_hl(0, 'Comment',               { fg = '#6f8292', italic = true })
+vim.api.nvim_set_hl(0, 'Constant',              { fg = '#ffcb6b' })
+vim.api.nvim_set_hl(0, 'String',                { fg = '#8fb594' }) -- Soft Sage
+vim.api.nvim_set_hl(0, 'pythonDocstring',       { fg = '#729184', italic = true })
+vim.api.nvim_set_hl(0, '@string.documentation', { fg = '#729184', italic = true })
+vim.api.nvim_set_hl(0, 'Identifier',            { fg = '#ff5370' }) -- Coral red (YAML/Terraform keys)
+vim.api.nvim_set_hl(0, 'Function',              { fg = '#82aaff' }) -- Ocean Blue function names
+vim.api.nvim_set_hl(0, 'Statement',             { fg = '#c792ea' }) -- Soft Purple keywords (class, def, if, return)
+vim.api.nvim_set_hl(0, 'Type',                  { fg = '#89ddff' }) -- Cyan types & classes
+vim.api.nvim_set_hl(0, 'Special',               { fg = '#ff5370' })
 
 -- Easy window navigation (jump between tree and code easily)
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window' })

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# setup_nvim.sh - Automates installation & cleanup of Neovim + Catppuccin + Terraform config.
+# setup_nvim.sh - Automates installation & cleanup of Neovim + Native Material Ocean + Terraform config.
 # Supports both macOS and Linux.
 
 set -e
@@ -8,7 +8,6 @@ set -e
 # Configuration variables
 INSTALL_DIR="$HOME/.local/neovim"
 CONFIG_DIR="$HOME/.config/nvim"
-PACK_THEME_DIR="$HOME/.local/share/nvim/site/pack/themes/start"
 PACK_PLUGIN_DIR="$HOME/.local/share/nvim/site/pack/plugins/start"
 RAW_CONFIG_URL="https://raw.githubusercontent.com/AlvarDev/agy-scripts/main/neovim/nvim/init.lua"
 
@@ -90,19 +89,13 @@ install_neovim() {
     print_status "Setting up configuration directory..."
     mkdir -p "$CONFIG_DIR"
 
-    # 3. Download Catppuccin Theme Natively
-    print_status "Downloading Catppuccin theme..."
-    rm -rf "$PACK_THEME_DIR/catppuccin"
-    mkdir -p "$PACK_THEME_DIR"
-    git clone --depth 1 https://github.com/catppuccin/nvim.git "$PACK_THEME_DIR/catppuccin"
-
-    # 4. Download Terraform syntax plugin Natively
+    # 3. Download Terraform syntax plugin Natively
     print_status "Downloading Terraform syntax plugin..."
     rm -rf "$PACK_PLUGIN_DIR/vim-terraform"
     mkdir -p "$PACK_PLUGIN_DIR"
     git clone --depth 1 https://github.com/hashivim/vim-terraform.git "$PACK_PLUGIN_DIR/vim-terraform"
 
-    # 5. Write init.lua (Copy local file if present, otherwise download from GitHub)
+    # 4. Write init.lua (Copy local file if present, otherwise download from GitHub)
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     if [ -f "$SCRIPT_DIR/nvim/init.lua" ]; then
         print_status "Copying local init.lua configuration..."
