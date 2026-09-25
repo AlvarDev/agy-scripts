@@ -12,6 +12,9 @@ A collection of helper scripts and configurations for setting up, managing, and 
 *   **`neovim/`**
     *   Contains the automated installer script (`setup_nvim.sh`) and the clean, native-only Neovim configuration (`init.lua`).
     *   Pre-configured for a modern dark look (Catppuccin Mocha), custom YAML/Terraform keys, and fast terminal navigation.
+*   **`iterm2/`**
+    *   Contains the native asset installer (`setup_iterm2.sh`) and configuration guide.
+    *   Aligns iTerm2's palette (Catppuccin Mocha), JetBrains Mono Nerd Font, and window framing with Neovim.
 
 ## 🚀 Getting Started
 
