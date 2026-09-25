@@ -14,9 +14,10 @@ A collection of helper scripts and configurations for setting up, managing, and 
     *   Pre-configured for a modern dark look (Catppuccin Mocha), custom YAML/Terraform keys, and fast terminal navigation.
 *   **`iterm2/`**
     *   Contains the native asset installer (`setup_iterm2.sh`) and configuration guide.
-    *   Aligns iTerm2's palette (Catppuccin Mocha), JetBrains Mono Nerd Font, and window framing with Neovim.
+    *   Configures iTerm2 with the **AlvarDev** profile (Material Ocean palette, native Monaco font, and zero-dependency Zsh Git prompt).
 
 ## 🚀 Getting Started
 
 1.  To manage your Google Cloud VMs, check out the documentation and manager script in the [workstation](workstation/README.md) directory.
 2.  To install or clean up Neovim on your Mac or any remote Linux VM via SSH, check out the script in the [neovim](neovim/README.md) directory.
+3.  To configure iTerm2 and the native Zsh Git prompt on your Mac, check out the guide in the [iterm2](iterm2/README.md) directory.
