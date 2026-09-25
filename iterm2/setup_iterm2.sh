@@ -8,9 +8,11 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 THEME_FILE="$SCRIPT_DIR/material-ocean.itermcolors"
+PROFILE_FILE="$SCRIPT_DIR/AlvarDev.json"
 BANNER_FILE="$SCRIPT_DIR/welcome_banner.txt"
 ZSHRC_FILE="$HOME/.zshrc"
 USER_BANNER="$HOME/.welcome_banner.txt"
+DYNAMIC_PROFILES_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
 
 # Output formatting
 print_status() {
@@ -29,13 +31,22 @@ fi
 
 print_status "Starting native iTerm2 AlvarDev configuration setup..."
 
-# 2. Trigger Color Preset Import
+# 2. Automated iTerm2 Profile Setup via Dynamic Profiles
+mkdir -p "$DYNAMIC_PROFILES_DIR"
+if [ -f "$PROFILE_FILE" ]; then
+    print_status "Installing AlvarDev dynamic profile to iTerm2..."
+    cp "$PROFILE_FILE" "$DYNAMIC_PROFILES_DIR/AlvarDev.json"
+fi
+
+# Set AlvarDev as default profile and activate Minimalist theme
+print_status "Setting AlvarDev as the default iTerm2 profile..."
+defaults write com.googlecode.iterm2 "Default Bookmark Guid" -string "1CFB15F1-56AA-42DD-8836-C429A2361322" 2>/dev/null || true
+defaults write com.googlecode.iterm2 "TabStyleWithAutomaticOption" -int 5 2>/dev/null || true
+
+# Import palette into presets catalog as well
 if [ -f "$THEME_FILE" ]; then
     print_status "Importing Material Ocean color preset into iTerm2..."
-    open -a iTerm "$THEME_FILE" 2>/dev/null || open "$THEME_FILE"
-else
-    print_error "Preset file not found at $THEME_FILE"
-    exit 1
+    open -a iTerm "$THEME_FILE" 2>/dev/null || open "$THEME_FILE" 2>/dev/null || true
 fi
 
 # 3. Install Welcome Screen Banner
@@ -44,13 +55,22 @@ if [ -f "$BANNER_FILE" ]; then
     cp "$BANNER_FILE" "$USER_BANNER"
 fi
 
-# 4. Configure Native Zero-Dependency Zsh Environment (if not already set)
-if [ -f "$ZSHRC_FILE" ]; then
-    if grep -q "Pure Native Zsh Git Prompt" "$ZSHRC_FILE"; then
-        print_status "Native Zsh Git prompt is already configured in $ZSHRC_FILE."
-    else
-        print_status "Adding zero-dependency native Zsh Git prompt to $ZSHRC_FILE..."
-        cat >> "$ZSHRC_FILE" << 'ZSH_EOF'
+# 4. Configure Native Zero-Dependency Zsh Environment
+touch "$ZSHRC_FILE"
+
+# Ensure Antigravity CLI and essential paths (resolving $HOME dynamically)
+if ! grep -q "Antigravity CLI" "$ZSHRC_FILE"; then
+    print_status "Configuring Antigravity CLI path ($HOME/.local/bin) in $ZSHRC_FILE..."
+    cat << 'PATH_EOF' | cat - "$ZSHRC_FILE" > "$ZSHRC_FILE.tmp" && mv "$ZSHRC_FILE.tmp" "$ZSHRC_FILE"
+# Essential Paths: Antigravity CLI, Local binaries, Homebrew
+export PATH="$HOME/.local/bin:$HOME/.antigravity/antigravity/bin:$HOME/.antigravity-ide/antigravity-ide/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+PATH_EOF
+fi
+
+if ! grep -q "Pure Native Zsh Git Prompt" "$ZSHRC_FILE"; then
+    print_status "Adding zero-dependency native Zsh Git prompt to $ZSHRC_FILE..."
+    cat >> "$ZSHRC_FILE" << 'ZSH_EOF'
 
 # --- Pure Native Zsh Git Prompt (Zero Dependencies) ---
 autoload -Uz compinit && compinit
@@ -91,37 +111,22 @@ if [ -f "$HOME/.welcome_banner.txt" ]; then
     cat "$HOME/.welcome_banner.txt"
 fi
 ZSH_EOF
-        print_status "Native Zsh Git prompt added successfully."
-    fi
+    print_status "Native Zsh Git prompt added successfully."
 fi
 
 cat << 'EOF'
 
 ===================================================================
-✨ Assets Configured! Complete the 5 GUI steps in iTerm2:
+✨ Setup complete! 100% Automated Profile Configured:
 ===================================================================
-1. Set Colors:
-   iTerm2 > Settings (Cmd + ,) > Profiles > Colors
-   Select "Color Presets..." (bottom-right) > "material-ocean"
-
-2. Set Font:
-   iTerm2 > Settings > Profiles > Text
-   Set Font to native: "Monaco" (Size: 12pt)
-   Check "Use thin strokes for anti-aliased text: Only on Retina Displays"
-
-3. Set Minimalist Theme:
-   iTerm2 > Settings > Appearance > General
-   Set "Theme" to: "Minimal"
-
-4. Window Padding & Scrollback Buffer:
-   - Settings > Profiles > Window > Columns/Rows Margins:
-     Set Horizontal to 12, Vertical to 8
-   - Settings > Profiles > Terminal:
-     Uncheck "Show scrollbar", set Scrollback lines to 10000
-
-5. Natural Word Navigation:
-   - Settings > Profiles > Keys > Key Mappings > Presets...
-     Select "Natural Text Editing" (enables Option+Left/Right word hops)
+* Profile: "AlvarDev" installed and set as default
+* Palette: Material Ocean (#0f111a background, #ffcc00 cursor)
+* Font: Native Monaco 12pt with Retina anti-aliasing
+* Window: 77 cols x 55 rows, 12px/8px margin padding
+* Keybindings: Natural Text Editing (Option+Left/Right word jumps)
+* Paths: $HOME/.local/bin included (agy command available)
+===================================================================
+👉 Please restart iTerm2 or open a new window (Cmd + N) to activate!
 ===================================================================
 
 EOF

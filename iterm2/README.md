@@ -4,11 +4,12 @@ This directory contains native setup automation and documentation to configure *
 
 ## 📦 Directory Contents
 
-* **`setup_iterm2.sh`**: Zero-dependency installer script that imports the local `material-ocean.itermcolors` preset into iTerm2, copies the Goku welcome banner, and configures the native Zsh Git prompt in `~/.zshrc`.
+* **`setup_iterm2.sh`**: Zero-dependency installer script that automatically provisions the `AlvarDev` default profile in iTerm2, sets essential Antigravity paths (`$HOME/.local/bin`), and configures the native Zsh prompt.
+* **`AlvarDev.json`**: Pre-configured iTerm2 Dynamic Profile with Monaco 12, Material Ocean colors, 77x55 geometry, 10,000 scrollback lines, and Natural Text Editing key mappings.
 * **`material-ocean.itermcolors`**: Native iTerm2 color preset with deep midnight background (`#0f111a`), slate text (`#8f93a2`), and signature gold cursor (`#ffcc00`).
 * **`welcome_banner.txt`**: Goku ASCII art welcome screen displayed on terminal startup.
 
-## 🚀 Installation
+## 🚀 Installation (100% Automated)
 
 Run the script locally:
 ```bash
@@ -16,17 +17,11 @@ chmod +x setup_iterm2.sh
 ./setup_iterm2.sh
 ```
 
-## ⚙️ Manual iTerm2 Preferences Configuration
-
-After running the script, configure these 5 settings in iTerm2 (`Cmd + ,`):
-
-1. **Colors**: `Profiles` > `Colors` > `Color Presets...` > choose **material-ocean**.
-2. **Font**: `Profiles` > `Text` > `Font` > choose native **Monaco** (Size: 12pt).
-3. **Frame Theme**: `Appearance` > `General` > `Theme` > select **Minimal** (title bar seamlessly matches `#0f111a`).
-4. **Padding & Scrollback**:
-   * `Profiles` > `Window`: Set Horizontal Margin to `12` and Vertical Margin to `8`.
-   * `Profiles` > `Terminal`: Uncheck `Show scrollbar` and set **Scrollback lines** to `10000`.
-5. **Keybindings**: `Profiles` > `Keys` > `Key Mappings` > `Presets...` > select **Natural Text Editing** (enables macOS `Option + ← / →` word hopping).
+The script automatically:
+1. Installs the `AlvarDev` Dynamic Profile directly into iTerm2 with `material-ocean` colors, native `Monaco 12`, 12/8 margin padding, 10,000 scrollback lines, and Natural Text Editing key mappings.
+2. Sets `AlvarDev` as the **default profile** and activates the **Minimalist seamless theme**.
+3. Guarantees `$HOME/.local/bin` (`agy` binary), Homebrew, and user paths in `~/.zshrc`.
+4. Installs the Goku welcome banner and zero-dependency Zsh Git prompt.
 
 ## 💻 MacBook Pro & Shell Performance Tips
 
