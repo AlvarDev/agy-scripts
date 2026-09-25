@@ -31,6 +31,14 @@ fi
 
 print_status "Starting native iTerm2 AlvarDev configuration setup..."
 
+# Shell Check Reminder (Non-blocking, zero passwords requested)
+if [[ "${SHELL:-}" != */zsh ]]; then
+    echo -e "\n\033[1;33m⚠️  Important Notice:\033[0m Your login shell is currently set to \033[1m$SHELL\033[0m."
+    echo -e "   For the Goku banner, Git prompt, and paths to load automatically on startup,"
+    echo -e "   please switch to native macOS Zsh by running:"
+    echo -e "   \033[1;32mchsh -s /bin/zsh\033[0m\n"
+fi
+
 # 2. Automated iTerm2 Profile Setup via Dynamic Profiles
 mkdir -p "$DYNAMIC_PROFILES_DIR"
 if [ -f "$PROFILE_FILE" ]; then
@@ -42,12 +50,6 @@ fi
 print_status "Setting AlvarDev as the default iTerm2 profile..."
 defaults write com.googlecode.iterm2 "Default Bookmark Guid" -string "1CFB15F1-56AA-42DD-8836-C429A2361322" 2>/dev/null || true
 defaults write com.googlecode.iterm2 "TabStyleWithAutomaticOption" -int 5 2>/dev/null || true
-
-# Import palette into presets catalog as well
-if [ -f "$THEME_FILE" ]; then
-    print_status "Importing Material Ocean color preset into iTerm2..."
-    open -a iTerm "$THEME_FILE" 2>/dev/null || open "$THEME_FILE" 2>/dev/null || true
-fi
 
 # 3. Install Welcome Screen Banner
 if [ -f "$BANNER_FILE" ]; then
@@ -114,18 +116,47 @@ ZSH_EOF
     print_status "Native Zsh Git prompt added successfully."
 fi
 
+if ! grep -q "up-line-or-beginning-search" "$ZSHRC_FILE"; then
+    print_status "Configuring native prefix history search (Up/Down arrow) in $ZSHRC_FILE..."
+    cat >> "$ZSHRC_FILE" << 'ZSH_EOF'
+
+# --- Native Prefix History Search (Zero Dependencies) ---
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt SHARE_HISTORY
+
+autoload -Uz up-line-or-beginning-search
+autoload -Uz down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+[[ -n "${terminfo[kcuu1]:-}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+[[ -n "${terminfo[kcud1]:-}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+ZSH_EOF
+    print_status "Native prefix history search added successfully."
+fi
+
 cat << 'EOF'
 
 ===================================================================
 ✨ Setup complete! 100% Automated Profile Configured:
 ===================================================================
 * Profile: "AlvarDev" installed and set as default
-* Palette: Material Ocean (#0f111a background, #ffcc00 cursor)
+* Palette: Neutral Charcoal (#141414 background, #ffcc00 cursor)
 * Font: Native Monaco 12pt with Retina anti-aliasing
 * Window: 77 cols x 55 rows, 12px/8px margin padding
-* Keybindings: Natural Text Editing (Option+Left/Right word jumps)
+* Keybindings: Clean modern defaults (deprecated mappings purged)
 * Paths: $HOME/.local/bin included (agy command available)
+* History: Native prefix search enabled (type prefix + Up/Down arrow)
 ===================================================================
+👉 If on Bash, remember to switch: chsh -s /bin/zsh
 👉 Please restart iTerm2 or open a new window (Cmd + N) to activate!
 ===================================================================
 
